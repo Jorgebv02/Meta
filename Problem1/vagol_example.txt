@@ -1,0 +1,10 @@
+begin
+	var x
+	0 -> x
+	until x == 3 do
+	begin
+		edit(x*x*10+1, '*')
+		print()
+		x + 0.1 -> x
+	end
+end
