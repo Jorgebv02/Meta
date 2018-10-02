@@ -29,7 +29,7 @@ if|until|do|begin|end|var|function|return {
 
 ","|";"|":" out() << "A punctuation mark: " << text() << " at line " << lineno() << " at column " << columno() << endl;
 
-"("|")"|"["|"]"|"{"|"}" out() << "A delimiter:: " << text() << " at line " << lineno() << " at column " << columno() << endl;
+"("|")"|"["|"]"|"{"|"}" out() << "A delimiter: " << text() << " at line " << lineno() << " at column " << columno() << endl;
 
 "+"|"-"|"*"|"!"|"->"|"=="|"&&"|"||" out() << "An operator: " << text() << " at line " << lineno() << " at column " << columno() << endl;
 

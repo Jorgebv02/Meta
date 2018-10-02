@@ -138,7 +138,7 @@ out() << "A punctuation mark: " << text() << " at line " << lineno() << " at col
             break;
           case 6: // rule at line 32: (?:\Q(\E)|(?:\Q)\E)|(?:\Q[\E)|(?:\Q]\E)|(?:\Q{\E)|(?:\Q}\E)
 #line 32 "vagol.l"
-out() << "A delimiter:: " << text() << " at line " << lineno() << " at column " << columno() << endl;
+out() << "A delimiter: " << text() << " at line " << lineno() << " at column " << columno() << endl;
 
             break;
           case 7: // rule at line 34: (?:\Q+\E)|(?:\Q-\E)|(?:\Q*\E)|(?:\Q!\E)|(?:\Q->\E)|(?:\Q==\E)|(?:\Q&&\E)|(?:\Q||\E)
