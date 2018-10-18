@@ -1,0 +1,13 @@
+jmp A01
+x
+block 1
+A01
+loadl 0
+store x
+A02
+load x
+loadl 3
+equal 
+jmpz A03
+edit *
+space 14
