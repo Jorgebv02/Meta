@@ -17,6 +17,26 @@
 
 using namespace std;
 
+// asm_instructions = { {label, code, bytes}, ... }
+vector<vector<string>> asm_instructions = {
+	{"load", "0x01", "4"},
+	{"loadl", "0x02", "9"},
+	{"store", "0x03", "4"},
+	{"add", "0x04", "1"},
+	{"sub", "0x05", "1"},
+	{"mult", "0x06", "1"},
+	{"equal", "0x07", "1"},
+	{"jmp", "0x08", "4"},
+	{"jmpz", "0x09", "4"},
+	{"jmpnz", "0x0A", "4"},
+	{"edit", "0x1N", "2"},
+	{"print", "0x0C", "1"},
+	{"halt", "0x0D", "1"},
+	{"space", "0x2N", "1"},
+	{"block", "0x00", "1"}, 
+	{"end", "0x00", "1"}
+};
+
 vector<string> tokenize(string str)
 {
 	istringstream buf(str);
