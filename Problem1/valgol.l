@@ -1,4 +1,8 @@
-/* scanner for vagol language */
+/* scanner for valgol language */
+/*	compile with:
+	reflex valgol.l
+	c++ -Ireflex/include -o tokenizer lex.yy.cpp /Users/adrian/Downloads/reflex/lib/libreflex.a 
+ */
 
 %top{
 	#include <cstdio>
@@ -19,8 +23,12 @@ STRING \".*?\"|'.*?'
 	out() << "A real: " << text() << " at line " << lineno() << " at column " << columno() << endl;
 }
 
-if|until|do|begin|end|var|function|return {
+if|until|do|begin|end|var|halt|space|block|function|return  {
 	out() << "A keyword: " << text() << " at line " << lineno() << " at column " << columno() << endl;
+}
+
+load|loadl|store|add|sub|mult|equal|jmp|jmpz|jmpnz {
+	out() << "An instruction: " << text() << " at line " << lineno() << " at column " << columno() << endl;
 }
 
 {ID} out() << "An identifier: " << text() << " at line " << lineno() << " at column " << columno() << endl;
