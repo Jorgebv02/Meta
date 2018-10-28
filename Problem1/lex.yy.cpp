@@ -17,11 +17,12 @@
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
-#line 7 "valgol.l"
+#line 8 "valgol.l"
 
 	#include <cstdio>
 	#include <iostream>
 	#include <iomanip>
+	#include <fstream>
 	using namespace std;
 
 
@@ -48,6 +49,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 class Lexer : public reflex::AbstractLexer<reflex::Matcher> {
+#line 16 "valgol.l"
+
+	ofstream tokens;
+	public:
+		void close_tokens() {
+			tokens.close();
+		}
+
  public:
   typedef reflex::AbstractLexer<reflex::Matcher> AbstractBaseLexer;
   Lexer(
@@ -56,6 +65,10 @@ class Lexer : public reflex::AbstractLexer<reflex::Matcher> {
     :
       AbstractBaseLexer(input, os)
   {
+#line 24 "valgol.l"
+
+	tokens.open("tokens.txt", ofstream::out | ofstream::trunc);
+
   }
   static const int INITIAL = 0;
   virtual int lex();
@@ -81,6 +94,7 @@ class Lexer : public reflex::AbstractLexer<reflex::Matcher> {
 /*	compile with:
 	reflex valgol.l
 	c++ -Ireflex/include -o tokenizer lex.yy.cpp /Users/adrian/Downloads/reflex/lib/libreflex.a
+	./tokenizer valgol_example.txt
  */
 
 
@@ -111,64 +125,82 @@ int Lexer::lex()
               out().put(matcher().input());
             }
             break;
-          case 1: // rule at line 22: (?:(?:[0-9])+(?:\x2e(?:[0-9])*)?|\x2e(?:[0-9])+)
-#line 22 "valgol.l"
+          case 1: // rule at line 36: (?:(?:[0-9])+(?:\x2e(?:[0-9])*)?|\x2e(?:[0-9])+)
+#line 36 "valgol.l"
 {
+	tokens << text() << " " << lineno() << " " << columno() << endl;
 	out() << "A real: " << text() << " at line " << lineno() << " at column " << columno() << endl;
 }
 
             break;
-          case 2: // rule at line 26: if|until|do|begin|end|var|halt|space|block|function|return
-#line 26 "valgol.l"
+          case 2: // rule at line 41: if|until|do|begin|end|var|halt|space|block|function|return
+#line 41 "valgol.l"
 {
+	tokens << text() << " " << lineno() << " " << columno() << endl;
 	out() << "A keyword: " << text() << " at line " << lineno() << " at column " << columno() << endl;
 }
 
             break;
-          case 3: // rule at line 30: load|loadl|store|add|sub|mult|equal|jmp|jmpz|jmpnz
-#line 30 "valgol.l"
+          case 3: // rule at line 46: load|loadl|store|add|sub|mult|equal|jmp|jmpz|jmpnz
+#line 46 "valgol.l"
 {
+	tokens << text() << " " << lineno() << " " << columno() << endl;
 	out() << "An instruction: " << text() << " at line " << lineno() << " at column " << columno() << endl;
 }
 
             break;
-          case 4: // rule at line 34: (?:(?:[A-Z]|_|[a-z])(?:[0-9]|[A-Z]|_|[a-z])*)
-#line 34 "valgol.l"
-out() << "An identifier: " << text() << " at line " << lineno() << " at column " << columno() << endl;
+          case 4: // rule at line 51: (?:(?:[A-Z]|_|[a-z])(?:[0-9]|[A-Z]|_|[a-z])*)
+#line 51 "valgol.l"
+{
+	tokens << text() << " " << lineno() << " " << columno() << endl;
+	out() << "An identifier: " << text() << " at line " << lineno() << " at column " << columno() << endl;
+}
 
             break;
-          case 5: // rule at line 36: (?:"(?:.[\x80-\xbf]*)*?"|'(?:.[\x80-\xbf]*)*?')
-#line 36 "valgol.l"
-out() << "A string: " << text() << " at line " << lineno() << " at column " << columno() << endl;
+          case 5: // rule at line 56: (?:"(?:.[\x80-\xbf]*)*?"|'(?:.[\x80-\xbf]*)*?')
+#line 56 "valgol.l"
+{
+	tokens << text() << " " << lineno() << " " << columno() << endl;
+	out() << "A string: " << text() << " at line " << lineno() << " at column " << columno() << endl;
+}
 
             break;
-          case 6: // rule at line 38: (?:\Q,\E)|(?:\Q;\E)|(?:\Q:\E)
-#line 38 "valgol.l"
-out() << "A punctuation mark: " << text() << " at line " << lineno() << " at column " << columno() << endl;
+          case 6: // rule at line 61: (?:\Q,\E)|(?:\Q;\E)|(?:\Q:\E)
+#line 61 "valgol.l"
+{
+	tokens << text() << " " << lineno() << " " << columno() << endl;
+	out() << "A punctuation mark: " << text() << " at line " << lineno() << " at column " << columno() << endl;
+}
 
             break;
-          case 7: // rule at line 40: (?:\Q(\E)|(?:\Q)\E)|(?:\Q[\E)|(?:\Q]\E)|(?:\Q{\E)|(?:\Q}\E)
-#line 40 "valgol.l"
-out() << "A delimiter: " << text() << " at line " << lineno() << " at column " << columno() << endl;
+          case 7: // rule at line 66: (?:\Q(\E)|(?:\Q)\E)|(?:\Q[\E)|(?:\Q]\E)|(?:\Q{\E)|(?:\Q}\E)
+#line 66 "valgol.l"
+{
+	tokens << text() << " " << lineno() << " " << columno() << endl;
+	out() << "A delimiter: " << text() << " at line " << lineno() << " at column " << columno() << endl;
+}
 
             break;
-          case 8: // rule at line 42: (?:\Q+\E)|(?:\Q-\E)|(?:\Q*\E)|(?:\Q!\E)|(?:\Q->\E)|(?:\Q==\E)|(?:\Q&&\E)|(?:\Q||\E)
-#line 42 "valgol.l"
-out() << "An operator: " << text() << " at line " << lineno() << " at column " << columno() << endl;
+          case 8: // rule at line 71: (?:\Q+\E)|(?:\Q-\E)|(?:\Q*\E)|(?:\Q!\E)|(?:\Q->\E)|(?:\Q==\E)|(?:\Q&&\E)|(?:\Q||\E)
+#line 71 "valgol.l"
+{
+	tokens << text() << " " << lineno() << " " << columno() << endl;
+	out() << "An operator: " << text() << " at line " << lineno() << " at column " << columno() << endl;
+}
 
             break;
-          case 9: // rule at line 44: (?:\Q/*\E)(?:(?:.[\x80-\xbf]*)|\n)*?(?:\Q*/\E)
-#line 44 "valgol.l"
+          case 9: // rule at line 76: (?:\Q/*\E)(?:(?:.[\x80-\xbf]*)|\n)*?(?:\Q*/\E)
+#line 76 "valgol.l"
 /* eat up multi-line comments */
 
             break;
-          case 10: // rule at line 46: (?:[\x09\x0a]|\x0d|\x20)+
-#line 46 "valgol.l"
+          case 10: // rule at line 78: (?:[\x09\x0a]|\x0d|\x20)+
+#line 78 "valgol.l"
 /* eat up whitespace */
 
             break;
-          case 11: // rule at line 48: (?:.[\x80-\xbf]*)
-#line 48 "valgol.l"
+          case 11: // rule at line 80: (?:.[\x80-\xbf]*)
+#line 80 "valgol.l"
 out() << "Unrecognized character: " << text() << " at line " << lineno() << " at column " << columno() << endl;
 
             break;
@@ -182,7 +214,7 @@ out() << "Unrecognized character: " << text() << " at line " << lineno() << " at
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
-#line 51 "valgol.l"
+#line 83 "valgol.l"
 
 int main(int argc, char **argv) {
 	FILE *fd = stdin;
@@ -192,6 +224,7 @@ int main(int argc, char **argv) {
 	Lexer lexer(fd);
 	// here we go!
 	lexer.lex();
+	lexer.close_tokens();
 	if (fd != stdin)
 		fclose(fd);
 	return 0;
