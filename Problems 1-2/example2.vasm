@@ -9,6 +9,21 @@ load x
 loadl 3
 equal 
 jmpz A03
-edit *
-space 14
-
+load x
+load x
+mult
+loadl 10
+mult
+loadl 1
+add
+edit "*"
+print
+load x
+loadl 0.1
+add
+store x
+jmp A02
+A03
+halt
+space 1
+end
