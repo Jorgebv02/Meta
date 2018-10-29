@@ -77,11 +77,6 @@ int main(int argc, char *argv[])
 	for (auto& tokens_vector: tokens) {
 		asm_to_hex(tokens_vector);
 	}
-	for (auto& tokens_vector: tokens) {
-		for (auto& t: tokens_vector) {
-			cout << t << " ";
-		}
-		cout << endl;
-	}
+	cout_tokens(tokens);
 }
 

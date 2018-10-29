@@ -35,6 +35,16 @@ namespace scanpp {
 		}
 		return tokens;
 	}
+	
+	void cout_tokens(std::vector<std::vector<std::string>>& tokens) 
+	{
+		for (auto& tokens_vector: tokens) {
+			for (auto& t: tokens_vector) {
+				std::cout << t << " ";
+			}
+			std::cout << std::endl;
+		}
+	}
 }
 
 #endif /* scan_hpp */
