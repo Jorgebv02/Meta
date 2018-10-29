@@ -1,9 +1,14 @@
-/* scanner for valgol language */
-/*	compile with:
-	reflex valgol.l
-	c++ -Ireflex/include -o tokenizer lex.yy.cpp /Users/adrian/Downloads/reflex/lib/libreflex.a
-	./tokenizer valgol_example.txt 
- */
+//
+//  tokenizer.cpp
+//  Problem #1: Valgol Tokenizer
+//
+//  Scanner For Valgol Code
+//
+// Compile with:
+//     reflex tokenizer.l
+//     c++ -Ireflex/include -o tokenizer lex.yy.cpp /Users/adrian/Downloads/reflex/lib/libreflex.a
+//     ./tokenizer example.val
+//
 
 %top{
 	#include <cstdio>
