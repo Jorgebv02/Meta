@@ -17,6 +17,7 @@
 #include <iterator>
 
 namespace scanpp {
+	// this function consider " " as token separator
 	std::vector<std::string> tokenize(std::string str)
 	{
 		std::istringstream buffer(str);

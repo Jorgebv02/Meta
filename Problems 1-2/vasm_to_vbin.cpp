@@ -6,8 +6,10 @@
 //
 //
 
+#include <map>
 #include <vector>
 #include <string>
+#include <iomanip>
 #include <sstream>
 #include <fstream>
 #include <iostream>
@@ -17,66 +19,146 @@
 using namespace std;
 using namespace scanpp;
 
-void asm_to_hex(vector<string>& tokens)
-{
-	for (vector<int>::size_type i = 0; i < tokens.size(); ++i) {
-		if ("load" == tokens[i]) {
-			tokens[i] = "0x01";
+class Vasm {
+	private:
+		int program_counter;
+		string vasm_file_name;
+		vector<vector<string>> tokens;
+		map<string, vector<string>> asm_instructions;
+		
+		vector<vector<string>> get_tokens() 
+		{
+			return tokens;
 		}
-		else if ("loadl" == tokens[i]) {
-			tokens[i] = "0x02";
+		
+		void print_tokens() 
+		{
+			cout_tokens(tokens);
 		}
-		else if ("store" == tokens[i]) {
-			tokens[i] = "0x03";
+		
+		map<string, vector<string>> get_asm_instructions() 
+		{
+			return asm_instructions;
 		}
-		else if ("add" == tokens[i]) {
-			tokens[i] = "0x04";
+		
+		template<typename T>
+		string int_to_hex(T i)
+		{
+			stringstream stream;
+			stream << "0x" 
+				   << setfill('0') 
+				   << setw(sizeof(T)*2) 
+				   << hex 
+				   << i;
+			return stream.str();
 		}
-		else if ("sub" == tokens[i]) {
-			tokens[i] = "0x05";
+		
+		void generate_addresses() 
+		{
+			for (auto& tokens_vector: tokens) {
+				string first_instruction = tokens_vector[0];
+				auto search = asm_instructions.find(first_instruction);
+				// push program counter current value to tokens_vector
+				tokens_vector.push_back(
+					// instruction address
+					int_to_hex(program_counter)
+				);
+				// if first instruction is an asm instruction
+				if (search != asm_instructions.end()) {
+					// add asm instruction bytes to program counter
+					program_counter += stoi(asm_instructions[first_instruction][0]);
+				}
+			}
 		}
-		else if ("mult" == tokens[i]) {
-			tokens[i] = "0x06";
+		
+		void generate_code() 
+		{
+			for (auto& tokens_vector: tokens) {
+				string first_instruction = tokens_vector[0];
+				auto search = asm_instructions.find(first_instruction);
+				// if first instruction is an asm instruction
+				if (search != asm_instructions.end()) {
+					// push instruction code to tokens_vector
+					tokens_vector.push_back(
+						// asm instruction code
+						asm_instructions[first_instruction][1]
+					);
+					// TODO
+				}
+			}
 		}
-		else if ("equal" == tokens[i]) {
-			tokens[i] = "0x07";
+		
+	public:
+		Vasm(string file_name) 
+		{
+			// Step 0.
+			program_counter = 0;
+			// Step 1.
+			tokens = tokenize_lines(file_name);
+			// Step 2.
+			/* { "load": {"4", "1"} } */
+			asm_instructions["load"].push_back("4");    // bytes
+			asm_instructions["load"].push_back("01");   // code
+			/* { "loadl": {"9", "2"} } */
+			asm_instructions["loadl"].push_back("9");   // bytes 
+			asm_instructions["loadl"].push_back("02");  // code
+			/* { "store": {"4", "3"} } */
+			asm_instructions["store"].push_back("4");   // bytes
+			asm_instructions["store"].push_back("03");  // code
+			/* { "add": {"1", "4"} } */
+			asm_instructions["add"].push_back("1");     // bytes 
+			asm_instructions["add"].push_back("04");    // code
+			/* { "sub": {"1", "5"} } */
+			asm_instructions["sub"].push_back("1");     // bytes
+			asm_instructions["sub"].push_back("05");    // code
+			/* { "mult": {"1", "6"} } */
+			asm_instructions["mult"].push_back("1");    // bytes
+			asm_instructions["mult"].push_back("06");   // code
+			/* { "equal": {"1", "7"} } */
+			asm_instructions["equal"].push_back("1");   // bytes
+			asm_instructions["equal"].push_back("07");  // code
+			/* { "jmp": {"4", "8"} } */
+			asm_instructions["jmp"].push_back("4");     // bytes
+			asm_instructions["jmp"].push_back("08");    // code
+			/* { "jmpz": {"4", "9"} } */
+			asm_instructions["jmpz"].push_back("4");    // bytes 
+			asm_instructions["jmpz"].push_back("09");   // code
+			/* { "jmpnz": {"4" "10"} } */
+			asm_instructions["jmpnz"].push_back("4");   // bytes   
+			asm_instructions["jmpnz"].push_back("0A");  // code
+			/* { "edit": {"2", "11"} } */
+			asm_instructions["edit"].push_back("2");    // bytes
+			asm_instructions["edit"].push_back("1N");   // code
+			/* { "print": {"1", "12"} } */
+			asm_instructions["print"].push_back("1");   // bytes 
+			asm_instructions["print"].push_back("0C");  // code
+			/* { "halt": {"1", "13"} } */
+			asm_instructions["halt"].push_back("1");    // bytes
+			asm_instructions["halt"].push_back("0D");   // code
+			/* { "space": {"1", "14"} } */
+			asm_instructions["space"].push_back("1");   // bytes 
+			asm_instructions["space"].push_back("2N");  // code
+			/* { "block": {"1", "0"} } */
+			asm_instructions["block"].push_back("8");   // bytes  
+			asm_instructions["block"].push_back("");    // code
+			/* { "end": {"1", "0"} } */
+			asm_instructions["end"].push_back("1");     // bytes  
+			asm_instructions["end"].push_back("");      // code
 		}
-		else if ("jmp" == tokens[i]) {
-			tokens[i] = "0x08";
+		
+		void run() 
+		{
+			generate_addresses();
+			generate_code();
+			print_tokens();
 		}
-		else if ("jmpz" == tokens[i]) {
-			tokens[i] = "0x09";
-		}
-		else if ("jmpnz" == tokens[i]) {
-			tokens[i] = "0x0A";
-		}
-		else if ("edit" == tokens[i]) {
-			tokens[i] = "0x1N";
-		}
-		else if ("print" == tokens[i]) {
-			tokens[i] = "0x0C";
-		}
-		else if ("halt" == tokens[i]) {
-			tokens[i] = "0x0D";
-		}
-		else if ("space" == tokens[i]) {
-			tokens[i] = "0x2N";
-		}
-		else if ("block" == tokens[i]) {
-			tokens[i] = "0x00";
-		}
-		else if ("end" == tokens[i]) {
-			tokens[i] = "0x00";
-		}
-	}
-}
+		
+		
+		
+};
 
 int main(int argc, char *argv[]) 
 {
-	vector<vector<string>> tokens = tokenize_lines("example2.vasm");
-	for (auto& tokens_vector: tokens) {
-		asm_to_hex(tokens_vector);
-	}
-	cout_tokens(tokens);
+	auto v = Vasm("example2.vasm");
+	v.run();
 }
-
