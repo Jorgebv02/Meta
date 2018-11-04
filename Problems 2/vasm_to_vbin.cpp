@@ -218,6 +218,6 @@ class Vasm {
 
 int main(int argc, char *argv[]) 
 {
-	auto v = Vasm("example2.vasm");
+	auto v = Vasm("example.vasm");
 	v.run();
 }
