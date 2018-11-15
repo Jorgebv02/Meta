@@ -1,0 +1,41 @@
+# depslib dependency file v1.0
+1540433542 source:c:\users\jorge\onedrive\escritorio\problem 3\src\arraylist.cpp
+	"ArrayList.h"
+	<stdexcept>
+	<iostream>
+
+1540432370 c:\users\jorge\onedrive\escritorio\problem 3\include\arraylist.h
+	<cstddef>
+	<stdexcept>
+
+1542258773 source:c:\users\jorge\onedrive\escritorio\problem 3\src\stack.cpp
+	"Stack.h"
+	"ArrayList.h"
+	<stdexcept>
+	<iostream>
+
+1540434314 c:\users\jorge\onedrive\escritorio\problem 3\include\stack.h
+	"ArrayList.h"
+	<cstddef>
+	<stdexcept>
+
+1542308221 source:c:\users\jorge\onedrive\escritorio\problem 3\main.cpp
+	<iostream>
+	<sstream>
+	<stdlib.h>
+	<vector>
+	<iterator>
+
+1542308582 source:c:\users\jorge\onedrive\escritorio\problem 3\src\debugger.cpp
+	"Debugger.h"
+	<vector>
+	<sstream>
+
+1542311709 c:\users\jorge\onedrive\escritorio\problem 3\include\debugger.h
+	"Stack.h"
+	<vector>
+	"Instruction.h"
+
+1540779375 c:\users\jorge\onedrive\escritorio\problem 3\include\instruction.h
+	<string>
+
