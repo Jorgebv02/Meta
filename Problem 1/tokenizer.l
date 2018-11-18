@@ -6,7 +6,8 @@
 //
 // Compile with:
 //     reflex tokenizer.l
-//     c++ -Ireflex/include -o tokenizer lex.yy.cpp /Users/adrian/Downloads/reflex/lib/libreflex.a
+//     Mac: c++ -Ireflex/include -o tokenizer lex.yy.cpp /Users/adrian/Downloads/reflex/lib/libreflex.a
+//     Linux: clang++ -Ireflex/include -o tokenizer lex.yy.cpp /home/adrian/Documentos/reflex-1.0.9/reflex/lib/libreflex.a
 //     ./tokenizer example.val
 //
 

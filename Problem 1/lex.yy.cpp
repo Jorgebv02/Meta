@@ -17,7 +17,7 @@
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
-#line 13 "tokenizer.l"
+#line 14 "tokenizer.l"
 
 	#include <cstdio>
 	#include <iostream>
@@ -32,7 +32,7 @@
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <reflex/matcher.h>
+#include "reflex/matcher.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 //                                                                            //
@@ -40,7 +40,7 @@
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <reflex/abslexer.h>
+#include "reflex/abslexer.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 //                                                                            //
@@ -49,7 +49,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 class Lexer : public reflex::AbstractLexer<reflex::Matcher> {
-#line 21 "tokenizer.l"
+#line 22 "tokenizer.l"
 
 	ofstream tokens;
 	public:
@@ -65,7 +65,7 @@ class Lexer : public reflex::AbstractLexer<reflex::Matcher> {
     :
       AbstractBaseLexer(input, os)
   {
-#line 29 "tokenizer.l"
+#line 30 "tokenizer.l"
 
 	tokens.open("tokens.txt", ofstream::out | ofstream::trunc);
 
@@ -98,7 +98,8 @@ class Lexer : public reflex::AbstractLexer<reflex::Matcher> {
 //
 // Compile with:
 //     reflex tokenizer.l
-//     c++ -Ireflex/include -o tokenizer lex.yy.cpp /Users/adrian/Downloads/reflex/lib/libreflex.a
+//     Mac: c++ -Ireflex/include -o tokenizer lex.yy.cpp /Users/adrian/Downloads/reflex/lib/libreflex.a
+//     Linux: clang++ -Ireflex/include -o tokenizer lex.yy.cpp /home/adrian/Documentos/reflex-1.0.9/reflex/lib/libreflex.a
 //     ./tokenizer example.val
 //
 
@@ -130,82 +131,82 @@ int Lexer::lex()
               out().put(matcher().input());
             }
             break;
-          case 1: // rule at line 41: (?:(?:[0-9])+(?:\x2e(?:[0-9])*)?|\x2e(?:[0-9])+)
-#line 41 "tokenizer.l"
+          case 1: // rule at line 42: (?:(?:[0-9])+(?:\x2e(?:[0-9])*)?|\x2e(?:[0-9])+)
+#line 42 "tokenizer.l"
 {
 	tokens << text() << " " << lineno() << " " << columno() << endl;
 	out() << "A real: " << text() << " at line " << lineno() << " at column " << columno() << endl;
 }
 
             break;
-          case 2: // rule at line 46: if|until|do|begin|end|var|halt|space|block|function|return
-#line 46 "tokenizer.l"
+          case 2: // rule at line 47: if|until|do|begin|end|var|halt|space|block|function|return
+#line 47 "tokenizer.l"
 {
 	tokens << text() << " " << lineno() << " " << columno() << endl;
 	out() << "A keyword: " << text() << " at line " << lineno() << " at column " << columno() << endl;
 }
 
             break;
-          case 3: // rule at line 51: load|loadl|store|add|sub|mult|equal|jmp|jmpz|jmpnz
-#line 51 "tokenizer.l"
+          case 3: // rule at line 52: load|loadl|store|add|sub|mult|equal|jmp|jmpz|jmpnz
+#line 52 "tokenizer.l"
 {
 	tokens << text() << " " << lineno() << " " << columno() << endl;
 	out() << "An instruction: " << text() << " at line " << lineno() << " at column " << columno() << endl;
 }
 
             break;
-          case 4: // rule at line 56: (?:(?:[A-Z]|_|[a-z])(?:[0-9]|[A-Z]|_|[a-z])*)
-#line 56 "tokenizer.l"
+          case 4: // rule at line 57: (?:(?:[A-Z]|_|[a-z])(?:[0-9]|[A-Z]|_|[a-z])*)
+#line 57 "tokenizer.l"
 {
 	tokens << text() << " " << lineno() << " " << columno() << endl;
 	out() << "An identifier: " << text() << " at line " << lineno() << " at column " << columno() << endl;
 }
 
             break;
-          case 5: // rule at line 61: (?:"(?:.[\x80-\xbf]*)*?"|'(?:.[\x80-\xbf]*)*?')
-#line 61 "tokenizer.l"
+          case 5: // rule at line 62: (?:"(?:.[\x80-\xbf]*)*?"|'(?:.[\x80-\xbf]*)*?')
+#line 62 "tokenizer.l"
 {
 	tokens << text() << " " << lineno() << " " << columno() << endl;
 	out() << "A string: " << text() << " at line " << lineno() << " at column " << columno() << endl;
 }
 
             break;
-          case 6: // rule at line 66: (?:\Q,\E)|(?:\Q;\E)|(?:\Q:\E)
-#line 66 "tokenizer.l"
+          case 6: // rule at line 67: (?:\Q,\E)|(?:\Q;\E)|(?:\Q:\E)
+#line 67 "tokenizer.l"
 {
 	tokens << text() << " " << lineno() << " " << columno() << endl;
 	out() << "A punctuation mark: " << text() << " at line " << lineno() << " at column " << columno() << endl;
 }
 
             break;
-          case 7: // rule at line 71: (?:\Q(\E)|(?:\Q)\E)|(?:\Q[\E)|(?:\Q]\E)|(?:\Q{\E)|(?:\Q}\E)
-#line 71 "tokenizer.l"
+          case 7: // rule at line 72: (?:\Q(\E)|(?:\Q)\E)|(?:\Q[\E)|(?:\Q]\E)|(?:\Q{\E)|(?:\Q}\E)
+#line 72 "tokenizer.l"
 {
 	tokens << text() << " " << lineno() << " " << columno() << endl;
 	out() << "A delimiter: " << text() << " at line " << lineno() << " at column " << columno() << endl;
 }
 
             break;
-          case 8: // rule at line 76: (?:\Q+\E)|(?:\Q-\E)|(?:\Q*\E)|(?:\Q!\E)|(?:\Q->\E)|(?:\Q==\E)|(?:\Q&&\E)|(?:\Q||\E)
-#line 76 "tokenizer.l"
+          case 8: // rule at line 77: (?:\Q+\E)|(?:\Q-\E)|(?:\Q*\E)|(?:\Q!\E)|(?:\Q->\E)|(?:\Q==\E)|(?:\Q&&\E)|(?:\Q||\E)
+#line 77 "tokenizer.l"
 {
 	tokens << text() << " " << lineno() << " " << columno() << endl;
 	out() << "An operator: " << text() << " at line " << lineno() << " at column " << columno() << endl;
 }
 
             break;
-          case 9: // rule at line 81: (?:\Q/*\E)(?:(?:.[\x80-\xbf]*)|\n)*?(?:\Q*/\E)
-#line 81 "tokenizer.l"
+          case 9: // rule at line 82: (?:\Q/*\E)(?:(?:.[\x80-\xbf]*)|\n)*?(?:\Q*/\E)
+#line 82 "tokenizer.l"
 /* eat up multi-line comments */
 
             break;
-          case 10: // rule at line 83: (?:[\x09\x0a]|\x0d|\x20)+
-#line 83 "tokenizer.l"
+          case 10: // rule at line 84: (?:[\x09\x0a]|\x0d|\x20)+
+#line 84 "tokenizer.l"
 /* eat up whitespace */
 
             break;
-          case 11: // rule at line 85: (?:.[\x80-\xbf]*)
-#line 85 "tokenizer.l"
+          case 11: // rule at line 86: (?:.[\x80-\xbf]*)
+#line 86 "tokenizer.l"
 out() << "Unrecognized character: " << text() << " at line " << lineno() << " at column " << columno() << endl;
 
             break;
@@ -219,7 +220,7 @@ out() << "Unrecognized character: " << text() << " at line " << lineno() << " at
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
-#line 88 "tokenizer.l"
+#line 89 "tokenizer.l"
 
 int main(int argc, char **argv) {
 	FILE *fd = stdin;
