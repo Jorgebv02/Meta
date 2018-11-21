@@ -13,6 +13,7 @@
 #include <cstring>
 #include <cstdlib>
 #include<stdlib.h>
+#include<stack>
 
 
 using std::cout;
@@ -25,34 +26,25 @@ using namespace scanpp;
 
 class Prueba{
 
-    /*Estructura de nodo necesaria para la pila*/
-    struct Nodo{
-    int dato;           //Valor que se ira almacenando
-    Nodo*siguiente;     //Puntero al siguiente nodo
-    };
+    /*Estructura de pila*/
+
+    void showstack(stack <int> s) 
+    { 
+        while (!s.empty()) 
+        { 
+            cout << '\t' << s.top(); 
+            s.pop(); 
+        } 
+        cout << '\n'; 
+    } 
+
 
     int programCounter = 0;                 //Program counter del programa
     string nombreArchivo = "code.vbin";     //Nombre del archivo del cual se tomara el programa
     vector<vector<string>> tokens = tokenize_lines(nombreArchivo);  //Matriz donde se almacenaran las instrucciones tokenizadas
-    Nodo*pila = NULL;                       //Estructuraque inicia la pila vacia 
-    int x=0;                            //Valor x que se utiliza como memoria
+    stack <int> pila;                       //Estructuraque inicia la pila vacia 
+    int x=0;                                //Valor x que se utiliza como memoria
 
-
-    //Funcion que hara push a la pila
-    void push(Nodo *&pila, int n){
-        Nodo *nuevoNodo = new Nodo();
-        nuevoNodo -> dato = n;
-        nuevoNodo ->siguiente = pila;
-        pila = nuevoNodo;
-    } 
-
-    //Funcion que ahra pull a la pila
-    Nodo* pull(Nodo *&pila, int&n){
-        Nodo *aux = pila;
-        n = aux->dato;
-        pila=aux->siguiente;
-        return aux;
-    }
 
     
     //Funcion que recibe la linea en la cual se esta trabajando para determinar lo siguiente a hacer
@@ -71,11 +63,11 @@ class Prueba{
             //Load posee dos posibilades
             instruccion=lineaActual[1];            //Caso en que la instrcuccion sea con x
             if (instruccion=="x"){
-                push(pila,x);                       //Push del valor en el DIR(x)
+                pila.push(x);                       //Push del valor en el DIR(x)
             }
             else{                                   //Caso en que la isntruccion sea con un valor
                 dato = std::stoi(instruccion);      //Conversion a entero
-                push(pila,dato);                    //Push del valor que indican
+                pila.push(dato);                    //Push del valor que indican
             }
 
         }
@@ -83,43 +75,47 @@ class Prueba{
 
             instruccion=lineaActual[1];            //Caso en que la instrcuccion sea con x
             if (instruccion=="x"){
-                Nodo *aux=pull(pila,dato);         //Se saca el top de la pila     
-                x=aux->dato;                       //Se almacena en x el valor del top
-                delete aux;                        //Se elimina el nodo 
+                x=pila.top();                        //Se almacena en x el valor del top
+                pila.pop();                      //Se elimina el top de la pila
                 }
 
         }else if(instruccion=="add"){
 
-            Nodo *aux=pull(pila,dato);          //Se saca el top de la pila     
-            Nodo *aux2=pull(pila,dato);         //Se saca el siguiente elemento de la pila          
-            dato = aux->dato + aux2->dato;      //Se guarda en dato el valor de la suma de los dos pull
-            push(pila,dato);                    //Se hace push del valor de la suma
-            delete aux; delete aux2;            //Se eliminan ambos auxiliares     
+            int temp=pila.top();                 //Se saca el top de la pila     
+            pila.pop();                         //Se elimina el top de la pila
+            int temp2=pila.top();                //Se saca el siguiente elemento de la pila    
+            pila.pop();                         //Se elimina el top de la pila
+            dato = temp+temp2;                  //Se guarda en dato el valor de la suma de los dos pops
+            pila.push(dato);                    //Se hace push del valor de la suma
+            
 
 
         }else if(instruccion=="sub"){
 
-            Nodo *aux=pull(pila,dato);          //Se saca el top de la pila     
-            Nodo *aux2=pull(pila,dato);         //Se saca el siguiente elemento de la pila          
-            dato = aux->dato - aux2->dato;      //Se guarda en dato el valor de la resta de los dos pull
-            push(pila,dato);                    //Se hace push del valor de la suma
-            delete aux; delete aux2;            //Se eliminan ambos auxiliares 
+            int temp=pila.top();                 //Se saca el top de la pila     
+            pila.pop();                         //Se elimina el top de la pila
+            int temp2=pila.top();                //Se saca el siguiente elemento de la pila    
+            pila.pop();                         //Se elimina el top de la pila
+            dato = temp-temp2;                  //Se guarda en dato el valor de la resta de los dos pops
+            pila.push(dato);                    //Se hace push del valor de la suma
 
         }else if(instruccion=="mult"){
 
-            Nodo *aux=pull(pila,dato);          //Se saca el top de la pila     
-            Nodo *aux2=pull(pila,dato);         //Se saca el siguiente elemento de la pila          
-            dato = aux->dato * aux2->dato;      //Se guarda en dato el valor de la multiplicacion de los dos pull
-            push(pila,dato);                    //Se hace push del valor de la suma
-            delete aux; delete aux2;            //Se eliminan ambos auxiliares 
+            int temp=pila.top();                 //Se saca el top de la pila     
+            pila.pop();                         //Se elimina el top de la pila
+            int temp2=pila.top();                //Se saca el siguiente elemento de la pila    
+            pila.pop();                         //Se elimina el top de la pila
+            dato = temp*temp2;                  //Se guarda en dato el valor de la mult de los dos pops
+            pila.push(dato);                    //Se hace push del valor de la suma
 
         }else if(instruccion=="equal"){
             
-            Nodo *aux=pull(pila,dato);          //Se saca el top de la pila     
-            Nodo *aux2=pull(pila,dato);         //Se saca el siguiente elemento de la pila          
-            dato = aux->dato - aux2->dato;      //Se guarda en dato el valor de la resta de los dos pull
-            push(pila,dato);                    //Se hace push del valor de la suma
-            delete aux; delete aux2;            //Se eliminan ambos auxiliares 
+            int temp=pila.top();                 //Se saca el top de la pila     
+            pila.pop();                         //Se elimina el top de la pila
+            int temp2=pila.top();                //Se saca el siguiente elemento de la pila    
+            pila.pop();                         //Se elimina el top de la pila
+            dato = temp+temp2;                  //Se guarda en dato el valor de la resta de los dos pops
+            pila.push(dato);                    //Se hace push del valor de la suma
 
         }else if(instruccion=="jmp"){
 
@@ -134,8 +130,8 @@ class Prueba{
 
         }else if(instruccion=="jmpz"){
 
-            Nodo *aux=pull(pila,dato);          //Se saca el top de la pila     
-            dato = aux->dato;                   //Guarda el valor en la variable dato
+            dato=pila.top();                //Guarda el valor en la variable dato
+            pila.pop();                         //Se saca el top de la pila     
             if(dato==0){                        //Revisa si el valor es 0
                 string etiqueta=lineaActual[1];                 //Obtencion de la etiqueta a la que se quiera saltar
                 for (int i=0; i<tokens.size(); i++){            //For que recorre todas las intrucciones para buscar la etiqueta        
@@ -146,12 +142,11 @@ class Prueba{
                     }
                 }
             } 
-            delete aux;                         //Elimina el nodo con el que se esta trabajando    
 
         }else if(instruccion=="jmpnz"){
 
-            Nodo *aux=pull(pila,dato);          //Se saca el top de la pila     
-            dato = aux->dato;                   //Guarda el valor en la variable dato
+            dato=pila.top();                //Guarda el valor en la variable dato
+            pila.pop();                         //Se saca el top de la pila     
             if(dato!=0){                        //Revisa si el valor es 0
                 string etiqueta=lineaActual[1];                 //Obtencion de la etiqueta a la que se quiera saltar
                 for (int i=0; i<tokens.size(); i++){            //For que recorre todas las intrucciones para buscar la etiqueta        
@@ -161,8 +156,7 @@ class Prueba{
                         break;
                     }
                 }
-            } 
-            delete aux;                         //Elimina el nodo con el que se esta trabajando  
+            }                         //Elimina el nodo con el que se esta trabajando  
 
         }else if(instruccion=="edit"){
 
