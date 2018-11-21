@@ -14,6 +14,7 @@
 #include <cstdlib>
 #include<stdlib.h>
 #include<stack>
+#include <cmath>
 
 
 using std::cout;
@@ -38,12 +39,15 @@ class Prueba{
         cout << '\n'; 
     } 
 
+    
+
 
     int programCounter = 0;                 //Program counter del programa
     string nombreArchivo = "code.vbin";     //Nombre del archivo del cual se tomara el programa
     vector<vector<string>> tokens = tokenize_lines(nombreArchivo);  //Matriz donde se almacenaran las instrucciones tokenizadas
     stack <int> pila;                       //Estructuraque inicia la pila vacia 
     int x=0;                                //Valor x que se utiliza como memoria
+    std::vector<std::string> bufferSalida;  //Vector con los valores del output
 
 
     
@@ -160,19 +164,28 @@ class Prueba{
 
         }else if(instruccion=="edit"){
 
-            //No implementado
+            dato = pila.top();              //Se extrae el tope de la pila
+            pila.pop();                     //Se elimina el tope de la pila
+            int posicion=round(dato);       //Se redondea el dato
+            string str = lineaActual[1];    //Se obtiene lo que se quiere insertar en el buffer salida
+            bufferSalida[posicion] = str;   //Se inserta en el buffer salida el valor
 
         }else if(instruccion=="print"){
 
-            //No implementado
+            for (int i = 0; i < 100; i++)
+            {
+                cout << bufferSalida[i] <<endl;     //Se imprime todo el bufferSalida
+            }
 
         }else if(instruccion=="halt"){
 
             return;                             //Se detiene la ejecucion del programa
 
         }else if(instruccion=="space"){
-
-            //No implementado
+    
+            for (int i =0; i<std::stoi(lineaActual[1]); i++){    //Agrega N espacios al bufferSalida
+                bufferSalida.push_back(" ");
+            }
 
         }else if(instruccion=="block"){
 
