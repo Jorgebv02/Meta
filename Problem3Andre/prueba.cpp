@@ -27,6 +27,8 @@ using namespace scanpp;
 
 class Prueba{
 
+    public:
+
     /*Estructura de pila*/
 
     void showstack(stack <int> s) 
@@ -54,6 +56,7 @@ class Prueba{
     //Funcion que recibe la linea en la cual se esta trabajando para determinar lo siguiente a hacer
     void run(int linea){ 
 
+
         int banderaJMP=-1;                          //Bandera que se utiliza en los jumps para encontrar la etiqueta
         vector<string> lineaActual = tokens[linea]; //Se obtinene la line actual que se esta trabajando 
         string instruccion=lineaActual[0];          //Se obtiene la instruccion
@@ -62,26 +65,31 @@ class Prueba{
 
         int dato;                                   //Variable necesaria en la mayoria de casos
 
+                
         if(instruccion=="load"){
 
             //Load posee dos posibilades
             instruccion=lineaActual[1];            //Caso en que la instrcuccion sea con x
             if (instruccion=="x"){
                 pila.push(x);                       //Push del valor en el DIR(x)
-            }
-            else{                                   //Caso en que la isntruccion sea con un valor
-                dato = std::stoi(instruccion);      //Conversion a entero
-                pila.push(dato);                    //Push del valor que indican
+                cout<<"Se ingreso el valor x a la pila"<<endl;
             }
 
-        }
-        else if(instruccion=="store"){
+        }else if(instruccion=="loadl"){
+
+            dato=std::stoi(lineaActual[1]);         //Se toma el valor del loadl
+            pila.push(dato);                        //Se hace push a la pila del valor
+            cout<<"Se ingreso el valor indicado a la pila"<<endl;
+
+
+        }else if(instruccion=="store"){
 
             instruccion=lineaActual[1];            //Caso en que la instrcuccion sea con x
             if (instruccion=="x"){
                 x=pila.top();                        //Se almacena en x el valor del top
                 pila.pop();                      //Se elimina el top de la pila
-                }
+                cout<<"Se guardo el valor del top de la pila en x"<<endl;
+            }
 
         }else if(instruccion=="add"){
 
@@ -91,6 +99,8 @@ class Prueba{
             pila.pop();                         //Se elimina el top de la pila
             dato = temp+temp2;                  //Se guarda en dato el valor de la suma de los dos pops
             pila.push(dato);                    //Se hace push del valor de la suma
+
+            cout<<"Se sumaron los dos tops de los pilas"<<endl;
             
 
 
@@ -122,10 +132,9 @@ class Prueba{
             pila.push(dato);                    //Se hace push del valor de la suma
 
         }else if(instruccion=="jmp"){
-
             string etiqueta=lineaActual[1];                 //Obtencion de la etiqueta a la que se quiera saltar
             for (int i=0; i<tokens.size(); i++){            //For que recorre todas las intrucciones para buscar la etiqueta        
-                vector<string> lineaTemp = tokens[linea];   //Se obtine la linea sesun el for 
+                vector<string> lineaTemp = tokens[i];       //Se obtine la linea sesun el for 
                 if (lineaTemp[0]==etiqueta){                //Enceuntra la linea donde se encuentra la etiqueta
                     banderaJMP=i;                           //Almacena en banderaJMP la linea a la que debe brincar
                     break;
@@ -224,6 +233,7 @@ class Prueba{
 int main(int argc, char *argv[])
 {
 
-    auto v = Prueba();
+    Prueba v;
+    v.run(0);
     
 }
