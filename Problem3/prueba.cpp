@@ -29,7 +29,7 @@ class Virtual_machine {
     private: 
         vector<vector<string>> tokens;          //Matriz donde se almacenaran las instrucciones tokenizadas
         stack<int> pila;                       //Estructuraque inicia la pila vacia 
-        int x = 0;                                //Valor x que se utiliza como memoria
+        int x = 4;                                //Valor x que se utiliza como memoria
         vector<string> bufferSalida;            //Vector con los valores del output
 
 
@@ -129,7 +129,7 @@ class Virtual_machine {
             } else if (instruccion == "jmpz") {
                 dato=pila.top();                //Guarda el valor en la variable dato
                 pila.pop();                         //Se saca el top de la pila     
-                if (dato == 0) {                        //Revisa si el valor es 0
+                if (dato != 0) {                        //Revisa si el valor es 0
                     string etiqueta = lineaActual[1];                 //Obtencion de la etiqueta a la que se quiera saltar
                     for (int i=0; i < tokens.size(); i++){            //For que recorre todas las intrucciones para buscar la etiqueta        
                         vector<string> lineaTemp = tokens[i];   //Se obtine la linea sesun el for 
@@ -142,7 +142,7 @@ class Virtual_machine {
             } else if (instruccion == "jmpnz") {
                 dato = pila.top();                //Guarda el valor en la variable dato
                 pila.pop();                         //Se saca el top de la pila     
-                if (dato != 0) {                        //Revisa si el valor es 0
+                if (dato == 0) {                        //Revisa si el valor es 0
                     string etiqueta=lineaActual[1];                 //Obtencion de la etiqueta a la que se quiera saltar
                     for (int i = 0; i < tokens.size(); i++){            //For que recorre todas las intrucciones para buscar la etiqueta        
                         vector<string> lineaTemp = tokens[i];   //Se obtine la linea sesun el for 
