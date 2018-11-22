@@ -20,34 +20,26 @@ class Virtual_machine {
     private: 
         vector<vector<string>> tokens;          //Matriz donde se almacenaran las instrucciones tokenizadas
         stack<int> pila;                        //Estructuraque inicia la pila vacia 
-        int x = 4;                              //Valor x que se utiliza como memoria
+        int x;                                  //Valor x que se utiliza como memoria
         vector<string> bufferSalida;            //Vector con los valores del output
-
-    public:
-        Virtual_machine(string filename) 
-        {
-            tokens = tokenize_lines(filename);
-            for(int i=0; i<10; i++){
-                bufferSalida.push_back("");
-            }
-        }
-
-        void showstack(stack <int> s) 
-        { 
-            while (!s.empty()) 
-            { 
-                cout << '\t' << s.top(); 
-                s.pop(); 
-            } 
-            cout << '\n'; 
-        } 
+        string program_counter;
+        char user_input;
 
         //Funcion que recibe la linea en la cual se esta trabajando para determinar lo siguiente a hacer
-        void run(int linea) { 
+        void run(int linea) 
+        {
 
-            int banderaJMP = -1;                         //Bandera que se utiliza en los jumps para encontrar la etiqueta
-            vector<string> lineaActual = tokens[linea]; //Se obtinene la line actual que se esta trabajando 
-            string instruccion=lineaActual[0];          //Se obtiene la instruccion
+            int banderaJMP = -1;                            //Bandera que se utiliza en los jumps para encontrar la etiqueta
+            vector<string> lineaActual = tokens[linea];     //Se obtinene la line actual que se esta trabajando 
+            string instruccion = lineaActual[0];            //Se obtiene la instruccion
+
+            // get program counter
+            if (lineaActual[1].find("0x") == 0) {
+                program_counter = lineaActual[1];
+            } else {
+               program_counter = lineaActual[2];
+            }
+            cout << "pc: " << program_counter << endl;
 
             //A continuacion se evaluan todas las posibles instrucciones que se pueden obtener 
 
@@ -60,12 +52,10 @@ class Virtual_machine {
                 if (valor == "x"){
                     pila.push(x);                       //Push del valor en el DIR(x)
                 }
-            }
-            else if (instruccion == "loadl"){
+            } else if (instruccion == "loadl"){
                 dato = stoi(lineaActual[1]);
                 pila.push(dato);
-            }
-            else if (instruccion == "store") {
+            } else if (instruccion == "store") {
                 instruccion = lineaActual[1];           //Caso en que la instrcuccion sea con x
                 if (instruccion == "x"){
                     x = pila.top();                     //Se almacena en x el valor del top
@@ -154,7 +144,7 @@ class Virtual_machine {
             } else if (instruccion == "halt") {
                 return;                                 //Se detiene la ejecucion del programa
             } else if (instruccion == "space") {
-                for (int i =0; i<stoi(lineaActual[1]); i++){ //Agrega N espacios al bufferSalida
+                for (int i =0; i<stoi(lineaActual[1]); i++) { //Agrega N espacios al bufferSalida
                     bufferSalida.push_back(" ");
                 }
             } else if (instruccion == "block") {
@@ -181,9 +171,53 @@ class Virtual_machine {
             cout << "x = " << x << endl;
             cout << endl;
 
-            run(linea);
+            cout << "Please choice an option from the list [continue(c), reload(r), stop(s)]: " ;
+            cin >> user_input;
+
+            switch(user_input) {
+                case 'c':
+                {
+                    run(linea);
+                    break;
+                }
+                case 'r' :
+                {
+                    run(0);
+                    break;
+                }
+                case 's':
+                {
+                    return;
+                }
+                default : cout << "\nBad Input. Must be c, r, or s options!" ;
             
+            }
             return;
+        }
+
+    public:
+        Virtual_machine(string filename) 
+        {
+            tokens = tokenize_lines(filename);
+            for (int i=0; i < 10; i++) {
+                bufferSalida.push_back("");
+            }
+            x = 4;
+        }
+
+        void start() 
+        {
+            cout << "VALGOL VIRTUAL MACHINE" << endl;
+            run(0);
+        }
+
+        void showstack(stack <int> s) 
+        { 
+            while (!s.empty()) { 
+                cout << "\t" << s.top(); 
+                s.pop(); 
+            } 
+            cout << endl; 
         }
 
 };
@@ -191,5 +225,5 @@ class Virtual_machine {
 int main(int argc, char *argv[])
 {
     auto v = Virtual_machine("code.vbin");
-    v.run(0);
+    v.start();
 }
