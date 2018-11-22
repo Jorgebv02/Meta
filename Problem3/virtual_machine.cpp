@@ -61,7 +61,7 @@ class Virtual_machine {
                     pila.push(x);                       //Push del valor en el DIR(x)
                 }
             }
-            else if(instruccion == "loadl"){
+            else if (instruccion == "loadl"){
                 dato = stoi(lineaActual[1]);
                 pila.push(dato);
             }
@@ -87,7 +87,7 @@ class Virtual_machine {
                 dato = temp-temp2;                      //Se guarda en dato el valor de la resta de los dos pops
                 pila.push(dato);                        //Se hace push del valor de la suma
 
-            } else if(instruccion == "mult") {
+            } else if (instruccion == "mult") {
                 int temp = pila.top();                  //Se saca el top de la pila     
                 pila.pop();                             //Se elimina el top de la pila
                 int temp2 = pila.top();                //Se saca el siguiente elemento de la pila    
@@ -95,7 +95,7 @@ class Virtual_machine {
                 dato = temp * temp2;                    //Se guarda en dato el valor de la mult de los dos pops
                 pila.push(dato);                        //Se hace push del valor de la suma
 
-            } else if(instruccion == "equal") {
+            } else if (instruccion == "equal") {
                 int temp = pila.top();                  //Se saca el top de la pila     
                 pila.pop();                             //Se elimina el top de la pila
                 int temp2 = pila.top();                 //Se saca el siguiente elemento de la pila    
@@ -145,9 +145,9 @@ class Virtual_machine {
                 string str = lineaActual[1];            //Se obtiene lo que se quiere insertar en el buffer salida
                 bufferSalida[posicion] = str;           //Se inserta en el buffer salida el valor
 
-            } else if(instruccion == "print") {
+            } else if (instruccion == "print") {
                 cout << "Buffer Salida: ";
-                for(int i = 0; i < bufferSalida.size(); i++){
+                for (int i = 0; i < bufferSalida.size(); i++){
                     cout << bufferSalida[i];
                 }
                 cout << endl;
@@ -178,7 +178,7 @@ class Virtual_machine {
 
             cout << "Stack: ";
             showstack(pila);
-            cout << "x = "<< x << endl;
+            cout << "x = " << x << endl;
             cout << endl;
 
             run(linea);
